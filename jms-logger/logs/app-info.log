@@ -1,0 +1,3 @@
+[INFO ] 05-10-2021 13:58:12 [org.springframework.jms.JmsListenerEndpointContainer#0-1] LoggerConsumer receiveLiquidOrder - OrderDetail
+[INFO ] [OrderDetail] 05-10-2021 14:00:31 [org.springframework.jms.JmsListenerEndpointContainer#0-1] LoggerConsumer receiveLiquidOrder - OrderDetail
+[INFO ] [OrderDetail: REJECTED0, OrderDetail{order=Order{user='dsds', orderType=liquid, amount=2.0, total=500.0}, orderStatus=REJECTED0}] 05-10-2021 14:02:10 [org.springframework.jms.JmsListenerEndpointContainer#0-1] LoggerConsumer receiveLiquidOrder - OrderDetail: REJECTED0, OrderDetail{order=Order{user='dsds', orderType=liquid, amount=2.0, total=500.0}, orderStatus=REJECTED0}
