@@ -9,10 +9,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
+import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.jms.ConnectionFactory;
 import java.util.HashMap;
@@ -44,6 +46,7 @@ public class JMSConfiguration {
                                                   DefaultJmsListenerContainerFactoryConfigurer configurer) {
     DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
     configurer.configure(factory, connectionFactory);
+    factory.setTransactionManager(jmsTransactionalManager());
     return factory;
   }
 
@@ -67,6 +70,12 @@ public class JMSConfiguration {
     template.setMessageConverter(jacksonJmsMessageConverter());
     template.setConnectionFactory(connectionFactory());
     template.setSessionTransacted(true);
+    template.setPubSubDomain(true);
     return template;
+  }
+
+  @Bean
+  public PlatformTransactionManager jmsTransactionalManager(){
+    return new JmsTransactionManager(connectionFactory());
   }
 }

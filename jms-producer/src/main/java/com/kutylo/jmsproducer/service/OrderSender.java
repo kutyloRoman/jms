@@ -8,9 +8,11 @@ import com.kutylo.jmsproducer.model.OrderType;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessagePostProcessor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
-
+@EnableTransactionManagement
 public class OrderSender {
 
   private JmsTemplate jmsTemplate;
@@ -24,6 +26,7 @@ public class OrderSender {
     this.jmsTemplate = jmsTemplate;
   }
 
+  @Transactional
   public void send(Order order) {
     checkOrder(order);
 

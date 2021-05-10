@@ -11,12 +11,13 @@ public class OrderConsumer {
   @JmsListener(destination = QUEUE, selector = "orderType = 'liquid'")
   public void receiveLiquidOrder(Order order){
 
-    System.out.println("Liquid: " + order);
+    System.out.println("Liquid order: " + order);
   }
 
   @JmsListener(destination = QUEUE, selector = "orderType = 'countable'")
   public void receiveCountableOrder(Order order){
-    System.out.println("Count: " + order);
+
+    System.out.println("Count order: " + order);
   }
 
 }

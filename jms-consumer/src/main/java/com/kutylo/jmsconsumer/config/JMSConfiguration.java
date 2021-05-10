@@ -1,6 +1,8 @@
 package com.kutylo.jmsconsumer.config;
 
 import com.kutylo.jmsconsumer.model.Order;
+import org.apache.activemq.ActiveMQConnectionFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,11 +19,23 @@ import java.util.Map;
 @Configuration
 public class JMSConfiguration {
 
+  @Value("${spring.activemq.broker-url}")
+  String brokerUrl;
+
+  @Bean
+  public ConnectionFactory connectionFactory() {
+    ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
+    connectionFactory.setBrokerURL(brokerUrl);
+
+    return connectionFactory;
+  }
+
   @Bean
   public JmsListenerContainerFactory<?> myFactory(ConnectionFactory connectionFactory,
                                                   DefaultJmsListenerContainerFactoryConfigurer configurer) {
     DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-    configurer.configure(factory, connectionFactory);
+    factory.setConnectionFactory(connectionFactory());
+    factory.setPubSubDomain(true);
     return factory;
   }
 
@@ -34,7 +48,7 @@ public class JMSConfiguration {
 
     converter.setTargetType(MessageType.TEXT);
     converter.setTypeIdPropertyName("_type");
-//    converter.setTypeIdPropertyName("liquid");
+
     converter.setTypeIdMappings(typeIdMappings);
     return converter;
   }
